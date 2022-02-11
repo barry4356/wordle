@@ -14,6 +14,17 @@ class WordleTests(BaseCase):
         end = req_text.find("],", start) + 1
         word_string = req_text[start:end]
         self.word_list = ast.literal_eval(word_string)
+        self.word_list.sort(key=self.word_ranker,reverse=True)
+
+# For now we simply choose whichever word remaining has the most common letters
+    def word_ranker(self, string):
+        count=0
+        for z in string:
+            if z in ['a','e','i','o','u','r','t','n','s','l','c']:
+                count=count+1
+        if string == "cigar": #always start with CIGAR
+            count = 1000
+        return count
 
     def modify_word_list(self, word, letter_status):
         new_word_list = []
@@ -52,12 +63,12 @@ class WordleTests(BaseCase):
         self.click("game-app::shadow game-modal::shadow game-icon")
         self.initalize_word_list()
         keyboard_base = "game-app::shadow game-keyboard::shadow "
-        word = random.choice(self.word_list)
+        word = self.word_list[0]
         total_attempts = 0
         success = False
         for attempt in range(6):
             total_attempts += 1
-            word = random.choice(self.word_list)
+            word = self.word_list[0]
             letters = []
             for letter in word:
                 letters.append(letter)
