@@ -16,7 +16,7 @@ class WordleTests(BaseCase):
         self.word_list = ast.literal_eval(word_string)
         self.word_list.sort(key=self.word_ranker,reverse=True)
 
-# For now we simply choose whichever word remaining has the most common letters
+    # For now we simply choose whichever word remaining has the most common letters
     def word_ranker(self, string):
         count=0
         for z in string:
